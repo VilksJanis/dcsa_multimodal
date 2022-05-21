@@ -20,7 +20,9 @@ updatePosition = async (new_data, channel) => {
   }
 }
 
-
+const ships = [
+  { id: 9074729, name: "Test Ship", position: { lat: 52.3545561, lng: 4.9571214 } }
+]
 
 
 
@@ -35,15 +37,15 @@ const locks = [
 function initMap() {
   const pos = { lat: 52.3545561, lng: 4.9571214 };
 
+  // MAP
   map = new google.maps.Map(document.getElementById("map"), {
     center: pos,
     zoom: 12,
     disableDefaultUI: true
   });
 
-
+  // LOCKS
   locks.forEach((lock) => {
-
     var radius = ((Math.random() * 2) + 5) * 1000
     lock_marker = new google.maps.Marker({
       position: lock.position,
@@ -56,6 +58,7 @@ function initMap() {
       draggable: true,
       title: "Lock",
     });
+
     var lock_circle = new google.maps.Circle({
       fillColor: '#F5F5F5',
       strokeColor: '#528BE2',
@@ -86,7 +89,7 @@ function initMap() {
       updatePosition({ type: "lock", id: lock.id, lat: lock_marker.position.lat(), lon: lock_marker.position.lng() }, 'broadcast');
       setTimeout(function () {
         if (lock_marker.dragging) {
-          lock_circle.setOptions({ fillColor: '#FF0000', });
+          lock_circle.setOptions({ fillColor: '#FF0000' });
         } else {
           lock_circle.setOptions({ fillColor: '#F5F5F5' });
         }
@@ -107,60 +110,76 @@ function initMap() {
   })
 
 
-  marker = new google.maps.Marker({
-    position: pos,
-    map,
-    label: {
-      text: "\ue532",
-      fontFamily: "Material Icons",
-      color: "#314354",
-      fontSize: "16px",
+  // SHIPS
+  ships.forEach((ship) => {
+    var radius = ((Math.random() * 3) + 4) * 1000
 
-    },
-    draggable: true,
-    title: "Ship",
-  });
-  var radius = ((Math.random() * 3) + 4) * 1000
-  const circle = new google.maps.Circle({
-    fillColor: '#F5F5F5',
-    strokeColor: '#528BE2',
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillOpacity: 0.15,
-    map,
-    center: pos,
-    radius: radius,
-  });
+    // MARKER
+    var ship_marker = new google.maps.Marker({
+      position: ship.position,
+      map,
+      label: {
+        text: "\ue532",
+        fontFamily: "Material Icons",
+        color: "#314354",
+        fontSize: "16px",
 
-  circle.bindTo('center', marker, 'position');
+      },
+      draggable: true,
+      title: "Ship",
+    });
 
-  marker.addListener('dragend', (event) => {
-    circle.setOptions({
+    // CIRCLE
+    var ship_circle = new google.maps.Circle({
       fillColor: '#F5F5F5',
       strokeColor: '#528BE2',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillOpacity: 0.15,
+      map,
+      center: ship.position,
+      radius: radius,
     });
-    updatePosition({ type: "ship", id: ship_a.id, lat: event.latLng.lat(), lon: event.latLng.lng(), radius: radius }, 'move')
-  });
 
-  marker.addListener('dragstart', (event) => {
-    circle.setOptions({ fillColor: '#0000FF', });
-  });
+    ship_circle.bindTo('center', ship_marker, 'position');
+
+    // EVENT LISTENERS
+    ship_marker.addListener('dragend', (event) => {
+      ship_circle.setOptions({
+        fillColor: '#F5F5F5',
+        strokeColor: '#528BE2',
+      });
+      updatePosition({ type: "ship", id: ship.id, lat: event.latLng.lat(), lon: event.latLng.lng(), radius: radius }, 'move')
+    });
+
+    ship_marker.addListener('dragstart', (event) => {
+      ship_circle.setOptions({ fillColor: '#0000FF', });
+    });
+
+    // POSITION BROADCAST
+    ship_position_broadcast = setInterval(() => {
+      ship_circle.setOptions({ fillColor: '#00FF00' });
+      updatePosition({ type: "ship", id: ship.id, lat: ship_marker.position.lat(), lon: ship_marker.position.lng() }, 'broadcast');
+      setTimeout(function () {
+        if (ship_marker.dragging) {
+          ship_circle.setOptions({ fillColor: '#0000FF', });
+        } else {
+          ship_circle.setOptions({ fillColor: '#F5F5F5' });
+        }
+      }, 150);
+    }, 1500);
+
+    updatePosition({ type: "ship", id: ship.id, lat: ship.position.lat, lon: ship.position.lng, radius: radius }, 'move')
+  })
 
 
-  ship_position_broadcast = setInterval(() => {
-    circle.setOptions({ fillColor: '#00FF00' });
-    updatePosition({ type: "ship", id: ship_a.id, lat: marker.position.lat(), lon: marker.position.lng() }, 'broadcast');
-    setTimeout(function () {
-      if (marker.dragging) {
-        circle.setOptions({ fillColor: '#0000FF', });
-      } else {
-        circle.setOptions({ fillColor: '#F5F5F5' });
-      }
-    }, 150);
-  }, 1500);
 
 
-  updatePosition({ type: "ship", id: ship_a.id, lat: pos.lat, lon: pos.lng, radius: radius }, 'move')
+
+
+
+
+
 
 }
 
