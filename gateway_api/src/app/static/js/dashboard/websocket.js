@@ -11,10 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
     socket.on('lockdata', function (data) {
         let lock = locks.find(i => i.id == parseFloat(data.lock))
         if (lock.tm) clearTimeout(lock.tm);
-        
+
         prioritized = lock.priorities.includes(parseFloat(data.identifier));
         disabled = prioritized ? "disabled" : "";
-        disabled_secondary = prioritized ? "": "disabled";
+        disabled_secondary = prioritized ? "" : "disabled";
 
         text = prioritized ? "Prioritized" : "Prioritize";
         var contentString = `
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </button>
             </div>
         `;
-        
+
 
         lock.infowindow.setContent(contentString);
         lock.infowindow.open({
@@ -44,13 +44,19 @@ document.addEventListener('DOMContentLoaded', function () {
         lock.tm = setTimeout(function () {
             lock.infowindow.close();
             lock.timeout = null;
-            lock.priorities.pop(lock.priorities.findIndex(i=> i==parseFloat(data.identifier)));
-        }, 2300);
+            lock.priorities.pop(lock.priorities.findIndex(i => i == parseFloat(data.identifier)));
+        }, 1000);
     });
 
 
     socket.on('shipdata', function (data) {
-        console.log(data)
+        let ship = ships.find(i => i.id == parseFloat(data.identifier))
+        if (ship != undefined) {
+            var latlng = new google.maps.LatLng(data.lat, data.lon);
+            ship.marker.setPosition(latlng);
+        }
+        updatePosition({ type: "ship", id: ship.id, lat: data.lat, lon: data.lon, radius: ship.radius }, 'move')
+        updatePosition({ type: "ship", id: ship.id, lat: data.lat, lon: data.lon, radius: ship.radius }, 'broadcast')
     });
 
 

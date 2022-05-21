@@ -51,7 +51,7 @@ def main():
 
                 response = requests.post("http://api:5000/dashboard/broadcast/lock", json=response_data)
 
-        time.sleep(1)
+        time.sleep(.5)
 
 
 if __name__ == "__main__":

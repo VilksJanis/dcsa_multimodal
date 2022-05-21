@@ -21,9 +21,8 @@ updatePosition = async (new_data, channel) => {
 }
 
 const ships = [
-  { id: 9074729, name: "Test Ship", position: { lat: 52.3545561, lng: 4.9571214 } }
+  { id: 9074729, name: "Test Ship", position: { lat: 0, lng: 0 } }
 ]
-
 
 
 const ship_a = { id: 9074729 };
@@ -35,23 +34,22 @@ const locks = [
 ]
 
 function initMap() {
-  const pos = { lat: 52.3545561, lng: 4.9571214 };
 
   // MAP
   map = new google.maps.Map(document.getElementById("map"), {
-    center: pos,
-    zoom: 12,
+    center: {lat: 51.90, lng: 4.836049},
+    zoom: 9,
     disableDefaultUI: true
   });
 
   // LOCKS
   locks.forEach((lock) => {
-    var radius = ((Math.random() * 2) + 5) * 1000
+    var radius = ((Math.random() * 2) + 10) * 1000
     lock_marker = new google.maps.Marker({
       position: lock.position,
       map,
       label: {
-        text: "\ueb98",
+        text: "\uf203",
         fontFamily: "Material Icons",
         fontSize: "18px"
       },
@@ -167,18 +165,13 @@ function initMap() {
           ship_circle.setOptions({ fillColor: '#F5F5F5' });
         }
       }, 150);
-    }, 1500);
+    }, 750);
 
-    updatePosition({ type: "ship", id: ship.id, lat: ship.position.lat, lon: ship.position.lng, radius: radius }, 'move')
+    updatePosition({ type: "ship", id: ship.id, lat: ship.position.lat, lon: ship.position.lng, radius: radius }, 'move');
+    ship.marker = ship_marker;
+    ship.circle = ship_circle;
+    ship.radius = radius;
   })
-
-
-
-
-
-
-
-
 
 
 }

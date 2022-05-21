@@ -22,7 +22,7 @@ def move():
             p.geoadd("BROADCASTERS", [data['lon'], data['lat'], name])
             p.execute()
 
-        return jsonify(1)
+        return jsonify(True)
 
     abort(500)
 
@@ -33,5 +33,5 @@ def broadcast():
     if (content_type == 'application/json'):
         data = request.json
         redis_client.publish(f"BROADCAST:{data['type']}:{data['id']}", json.dumps({"id": data['id'], "lat": data['lat'], "lon": data['lon']}))
-        return jsonify(1)
+        return jsonify(True)
     abort(500)

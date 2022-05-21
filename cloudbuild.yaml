@@ -1,0 +1,27 @@
+steps:
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'europe-west4-docker.pkg.dev/amsterdam-dcsa/dcsa-app:${TAG_NAME}', './gateway_api']
+
+  # Docker Push
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west4-docker.pkg.dev/amsterdam-dcsa/dcsa-app:${TAG_NAME}']
+
+
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'europe-west4-docker.pkg.dev/amsterdam-dcsa/dcsa-ship:${TAG_NAME}', './ship_app']
+
+  # Docker Push
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west4-docker.pkg.dev/amsterdam-dcsa/dcsa-ship:${TAG_NAME}']
+
+
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'europe-west4-docker.pkg.dev/amsterdam-dcsa/dcsa-lock:${TAG_NAME}', './lock_app']
+
+  # Docker Push
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west4-docker.pkg.dev/amsterdam-dcsa/dcsa-lock:${TAG_NAME}']
+
