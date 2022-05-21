@@ -49,6 +49,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    socket.on('shipdata', function (data) {
+        console.log(data)
+    });
+
 
 
 

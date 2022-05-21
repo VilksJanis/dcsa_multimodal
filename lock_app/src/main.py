@@ -7,6 +7,7 @@ import redis
 
 from datetime import datetime, timezone
 
+
 def main():
     redis_client = redis.StrictRedis("redis", decode_responses=True)
 
@@ -26,10 +27,10 @@ def main():
                 if response.status_code != 200:
                     logging.warning(response.json())
                     continue
-                
+
                 response_data = {}
                 datapoints = response.json()
-                
+
                 for data in datapoints['terminal']:
                     dt_event_requested = datetime.fromisoformat(data['eventDateTime'].strip("Z"))
                     time_remaining = dt_event_requested - datetime.utcnow()
@@ -48,10 +49,10 @@ def main():
                     response_data['datetime_estimated'] = dt_event.isoformat()
                     response_data['time_budget'] = (dt_event_requested - dt_event).total_seconds()
 
-                response = requests.post("http://api:5000/dashboard/broadcast", json=response_data)
-
+                response = requests.post("http://api:5000/dashboard/broadcast/lock", json=response_data)
 
         time.sleep(1)
+
 
 if __name__ == "__main__":
     main()
