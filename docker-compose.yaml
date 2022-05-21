@@ -10,15 +10,14 @@ services:
     volumes:
       - "./gateway_api/src/:/src"
     environment:
-      - API_BASE_URL_TERMINAL=https://t5terminal.dev-hackathon-202205.dcsa.org/jit/v1/events
-      - API_CLIENT_ID_TERMINAL=m9tl6vjsnhg5q9na0oaakqvbp
-      - API_CLIENT_SECRET_TERMINAL=8s7gqt4d3n8pu4j63jd1fh8icm0fl8of41uqbsai5obuiog3uk5
-
-      - API_BASE_URL_CARRIER=https://t5carrier.dev-hackathon-202205.dcsa.org/jit/v1/events
-      - API_CLIENT_ID_CARRIER=4lk2eooigqbva1lpvo1kb4hieq
-      - API_CLIENT_SECRET_CARRIER=1mdutnhu42k873mj59u13krn0dtaabvvksctj3j2rt4psp1lbt46
-
-      - TOKEN_URL=https://9g2pkr41d6.auth.eu-west-1.amazoncognito.com/oauth2/token
+      - API_BASE_URL_TERMINAL=
+      - API_CLIENT_ID_TERMINAL=
+      - API_CLIENT_SECRET_TERMINAL=
+      
+      - API_BASE_URL_CARRIER=
+      - API_CLIENT_ID_CARRIER=
+      - API_CLIENT_SECRET_CARRIER=
+      - TOKEN_URL=
     restart: always
 
   # ship:
