@@ -10,20 +10,25 @@ services:
     volumes:
       - "./gateway_api/src/:/src"
     environment:
+      - GOOGLE_MAPS_API_KEY=
       - API_BASE_URL_TERMINAL=
       - API_CLIENT_ID_TERMINAL=
       - API_CLIENT_SECRET_TERMINAL=
-      
       - API_BASE_URL_CARRIER=
       - API_CLIENT_ID_CARRIER=
       - API_CLIENT_SECRET_CARRIER=
       - TOKEN_URL=
     restart: always
+    depends_on:
+      - redis
 
-  # ship:
-  #   build:
-  #     context: ./ship_app
-  #     dockerfile: Dockerfile   
+  ship:
+    build:
+      context: ./ship_app
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - api
 
 
   lock:
@@ -31,7 +36,9 @@ services:
       context: ./lock_app
       dockerfile: Dockerfile
     restart: always
-
+    depends_on:
+      - api
+      - redis
   redis:
     image: 'bitnami/redis:latest'
     environment:
