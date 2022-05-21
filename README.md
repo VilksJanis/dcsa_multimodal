@@ -5,7 +5,8 @@
 ## Prerequisites/Dependencies
 
 1. Installed docker and docker-compose;
-2. Access DCSA API (TERMINAL and CARRIER):
+2. Google Maps API key
+3. Access DCSA API (TERMINAL and CARRIER):
     - API base url for events;
     - TOKEN URL;
     - Client id;
@@ -19,6 +20,7 @@
     services:
     api:
         environment:
+        - GOOGLE_MAPS_API_KEY=
         - API_BASE_URL_TERMINAL=
         - API_CLIENT_ID_TERMINAL=
         - API_CLIENT_SECRET_TERMINAL=
