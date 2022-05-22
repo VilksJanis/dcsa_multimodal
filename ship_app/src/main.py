@@ -13,7 +13,7 @@ def main():
     while True:
 
         for lon, lat in MOCKUP_DATA['coordinates']:
-            requests.post(f"http://api:5000/dashboard/broadcast/ship/{MOCKUP_DATA['identifier']}", json={"lat": lat, "lon": lon})
+            requests.post(f"http://api:8080/dashboard/broadcast/ship/{MOCKUP_DATA['identifier']}", json={"lat": lat, "lon": lon})
             time.sleep(.15)
         time.sleep(3)
     

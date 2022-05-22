@@ -21,7 +21,7 @@ def main():
 
             for local_ship in local_ships:
                 identifier = local_ship.split(":")[1]
-                dcsa_url = f'http://api:5000/dcsa/events/{identifier}'
+                dcsa_url = f'http://api:8080/dcsa/events/{identifier}'
                 response = requests.get(dcsa_url)
 
                 if response.status_code != 200:
@@ -49,7 +49,7 @@ def main():
                     response_data['datetime_estimated'] = dt_event.isoformat()
                     response_data['time_budget'] = (dt_event_requested - dt_event).total_seconds()
 
-                response = requests.post("http://api:5000/dashboard/broadcast/lock", json=response_data)
+                response = requests.post("http://api:8080/dashboard/broadcast/lock", json=response_data)
 
         time.sleep(.5)
 
