@@ -12,7 +12,7 @@ updatePosition = async (new_data, channel) => {
     body: JSON.stringify(new_data)
   };
   try {
-    const fetchResponse = await fetch(`http://${location}:5000/events/${channel}`, settings);
+    const fetchResponse = await fetch(`http://${location}:8080/events/${channel}`, settings);
     const data = await fetchResponse.json();
     return data;
   } catch (e) {
